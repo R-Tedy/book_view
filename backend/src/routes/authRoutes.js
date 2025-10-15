@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
     }
 
     // generate avatar
-    const profileImage = `https://api.dicebar.com/7.x/avataaars/svg?seed=${username}`;
+    const profileImage = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
 
     const user = new User({
       email, username, password, profileImage
@@ -52,7 +52,7 @@ router.post("/register", async (req, res) => {
         username,
         email,
         profileImage,
-        createdAt,
+        createdAt: user.createdAt,
       },
     });
   } catch (error) {
