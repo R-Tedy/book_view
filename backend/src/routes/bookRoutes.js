@@ -23,7 +23,7 @@ router.post("/",  async (req, res) => {
       caption,
       rating,
       image: imageUrl,
-      user: stedyId,
+      user: req.user._id,
     })
 
     await newBook.save();
@@ -59,6 +59,18 @@ router.get("/", async (req, res) => {
     console.error("Error in getting all books route", error);
     res.status(500).json({message: "Internal server error."});
   }
-})
+});
+
+router.get("/user", async (req, res) => {
+  try {
+    const books = await Book.find({user: req.user._id}).sort({createdAt: -1});
+    res.json(books);
+  } catch (error) {
+    console.error("Error accessing user books:", error.message);
+    res.status(500).json({message: "Internal Server Error"});
+  }
+});
+
+
 
 export default router;
