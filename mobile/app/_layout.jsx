@@ -15,7 +15,7 @@ export default function RootLayout() {
   const {checkAuth, user, token} = useAuthStore();
 
   const [fontsLoaded] = useFonts({
-    "JetBrainsMono-Medium": require("../assets/fonts/JetBrainsMono_Medium.ttf"),
+    "JetBrainsMono-Medium": require("../assets/fonts/JetBrainsMono-Medium.ttf"),
   });
 
   useEffect(() => {
@@ -24,21 +24,24 @@ export default function RootLayout() {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
-  useEffect(() => {
-    const inAuthScreen = segments[0] === "(auth)";
-    const isSignedIn = user && token;
+  // handle notification based on auth state
+  // useEffect(() => {
+  //   const inAuthScreen = segments[0] === "(auth)";
+  //   const isSignedIn = user && token;
 
-    if (!isSignedIn && !inAuthScreen) router.replace("/(auth)");
-    else if (isSignedIn && inAuthScreen) router.replace("/(tabs)");
-  },[user, token, segments]);
+  //   if (!isSignedIn && !inAuthScreen) router.replace("/(auth)");
+  //   else if (isSignedIn && inAuthScreen) router.replace("/(tabs)");
+  // },[user, token, segments, router]);
+
   return (
     <SafeAreaProvider>
       <SafeScreen>
         <Stack screenOptions={{headerShown: false}}>
+          {/* <Slot/> */}
           <Stack.Screen name="(tabs)"/>
-          <Stack.Screen name="(suth)"/>
+          <Stack.Screen name="(auth)"/>
         </Stack>
       </SafeScreen>
       <StatusBar style="dark"/>
