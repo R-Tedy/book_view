@@ -1,4 +1,4 @@
-import { View, Text, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useRouter } from "expo-router";
 import { API_URL } from "../../constants/api";
@@ -41,6 +41,8 @@ const Profile = () => {
       setIsLoading(false);
     }
   };
+
+  // console.log(books);
 
   useEffect(() => {
     fetchData();
@@ -125,6 +127,37 @@ const Profile = () => {
     <View style={styles.container}>
       <ProfileHeader/>
       <LogoutButton/>
+
+      {/* your recommendations */}
+      <View style={styles.booksHeader}>
+        <Text style={styles.booksTitle}>Your Recommendations 📚</Text>
+        <Text style={styles.booksCount}>{books.length}</Text>
+      </View>
+
+      <FlatList
+        data={books}
+        renderItem={renderBookItem}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.booksList}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Ionicons name='book-outline' size={50} color={COLORS.textSecondary}/>
+            <Text style={styles.emptyText}>No recommendations yet</Text>
+            <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
+              <Text style={styles.addButtonText}>Add Your First Book</Text>
+            </TouchableOpacity>
+          </View>
+        }
+      />
     </View>
   )
 }
