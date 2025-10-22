@@ -15,7 +15,7 @@ export default function RootLayout() {
   const {checkAuth, user, token} = useAuthStore();
 
   // console.log("Auth Store Content:", checkAuth);
-  console.log("User:", user, "Token:", token);
+  // console.log("User:", user, "Token:", token);
 
   // const [fontsLoaded] = useFonts({
   //   "JetBrainsMono-Medium": require("../assets/fonts/JetBrainsMono-Medium.ttf"),
@@ -34,11 +34,13 @@ export default function RootLayout() {
 
   // handle notification based on auth state
   useEffect(() => {
-    const inAuthScreen = segments[0] === "(auth)";
-    const isSignedIn = user && token;
+    setTimeout(() => {
+      const inAuthScreen = segments[0] === "(auth)";
+      const isSignedIn = user && token;
 
-    if (!isSignedIn && !inAuthScreen) router.replace("/(auth)");
-    else if (isSignedIn && inAuthScreen) router.replace("/(tabs)");
+      if (!isSignedIn && !inAuthScreen) router.replace("/(auth)");
+      else if (isSignedIn && inAuthScreen) router.replace("/(tabs)");
+    }, 2500);
   },[user, token, segments, router]);
 
   return (
